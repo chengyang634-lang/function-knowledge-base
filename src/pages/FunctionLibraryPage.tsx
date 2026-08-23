@@ -800,7 +800,7 @@ function FunctionLibraryPage() {
           </Link>
 
           <Link to="/admin">
-            管理后台
+            🔒 管理后台
           </Link>
         </div>
       </header>

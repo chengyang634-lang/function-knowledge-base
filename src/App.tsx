@@ -5,15 +5,34 @@ import {
   Routes,
 } from 'react-router-dom';
 
-import FunctionLibraryPage from './pages/FunctionLibraryPage';
-import AdminPage from './pages/AdminPage';
-import FunctionAdminPage from './pages/FunctionAdminPage';
-import NewFunctionPage from './pages/NewFunctionPage';
-import EditFunctionPage from './pages/EditFunctionPage';
-import CategoryAdminPage from './pages/CategoryAdminPage';
-import TagAdminPage from './pages/TagAdminPage';
-import ReviewPage from './pages/ReviewPage';
+import type { ReactNode } from 'react';
+
+import AdminGuard from './components/AdminGuard';
 import ThemeToggle from './components/ThemeToggle';
+import {
+  installAdminFetchInterceptor,
+} from './lib/adminAuth';
+import AdminLoginPage from './pages/AdminLoginPage';
+import AdminPage from './pages/AdminPage';
+import CategoryAdminPage from './pages/CategoryAdminPage';
+import EditFunctionPage from './pages/EditFunctionPage';
+import FunctionAdminPage from './pages/FunctionAdminPage';
+import FunctionLibraryPage from './pages/FunctionLibraryPage';
+import NewFunctionPage from './pages/NewFunctionPage';
+import ReviewPage from './pages/ReviewPage';
+import TagAdminPage from './pages/TagAdminPage';
+
+installAdminFetchInterceptor();
+
+function protect(
+  element: ReactNode,
+) {
+  return (
+    <AdminGuard>
+      {element}
+    </AdminGuard>
+  );
+}
 
 function App() {
   return (
@@ -32,33 +51,48 @@ function App() {
         />
 
         <Route
+          path="/admin/login"
+          element={<AdminLoginPage />}
+        />
+
+        <Route
           path="/admin"
-          element={<AdminPage />}
+          element={protect(<AdminPage />)}
         />
 
         <Route
           path="/admin/functions"
-          element={<FunctionAdminPage />}
+          element={protect(
+            <FunctionAdminPage />,
+          )}
         />
 
         <Route
           path="/admin/functions/new"
-          element={<NewFunctionPage />}
+          element={protect(
+            <NewFunctionPage />,
+          )}
         />
 
         <Route
           path="/admin/functions/:id/edit"
-          element={<EditFunctionPage />}
+          element={protect(
+            <EditFunctionPage />,
+          )}
         />
 
         <Route
           path="/admin/categories"
-          element={<CategoryAdminPage />}
+          element={protect(
+            <CategoryAdminPage />,
+          )}
         />
 
         <Route
           path="/admin/tags"
-          element={<TagAdminPage />}
+          element={protect(
+            <TagAdminPage />,
+          )}
         />
 
         <Route

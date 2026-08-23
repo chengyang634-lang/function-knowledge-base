@@ -1,6 +1,27 @@
-import { Link } from 'react-router-dom';
+import {
+  Link,
+  useNavigate,
+} from 'react-router-dom';
+
+import {
+  logoutAdmin,
+} from '../lib/adminAuth';
 
 function AdminPage() {
+  const navigate =
+    useNavigate();
+
+  async function handleLock() {
+    await logoutAdmin();
+
+    navigate(
+      '/',
+      {
+        replace: true,
+      },
+    );
+  }
+
   return (
     <main className="admin-page">
       <header className="admin-header">
@@ -12,9 +33,20 @@ function AdminPage() {
           </p>
         </div>
 
-        <Link to="/">
-          返回知识库
-        </Link>
+        <div className="admin-actions">
+          <button
+            type="button"
+            onClick={() =>
+              void handleLock()
+            }
+          >
+            🔒 锁定后台
+          </button>
+
+          <Link to="/">
+            返回知识库
+          </Link>
+        </div>
       </header>
 
       <section className="admin-menu">

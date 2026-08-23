@@ -1,0 +1,103 @@
+.admin-login-page {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 28px;
+  background: var(--theme-bg);
+}
+
+.admin-login-card {
+  width: min(440px, 100%);
+  padding: 30px;
+  border: 1px solid var(--theme-border);
+  border-radius: 18px;
+  background: var(--theme-surface);
+  box-shadow:
+    0 24px 70px
+    rgba(0, 0, 0, 0.16);
+}
+
+.admin-lock-icon {
+  display: grid;
+  width: 50px;
+  height: 50px;
+  place-items: center;
+  margin-bottom: 20px;
+  border: 1px solid var(--theme-border);
+  border-radius: 14px;
+  background: var(--theme-surface-soft);
+  font-size: 1.35rem;
+}
+
+.admin-login-heading > span {
+  color: var(--theme-accent);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.admin-login-heading h1 {
+  margin: 7px 0 8px;
+  font-size: 1.7rem;
+}
+
+.admin-login-heading p {
+  margin-bottom: 24px;
+  color: var(--theme-muted);
+}
+
+.admin-login-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.admin-login-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: var(--theme-text-soft);
+  font-size: 0.88rem;
+  font-weight: 650;
+}
+
+.admin-login-card input {
+  min-height: 48px;
+}
+
+.admin-login-card
+  button[type='submit'] {
+  min-height: 46px;
+  border-color: var(--theme-accent);
+  background: var(--theme-accent);
+  color: #fff;
+  font-weight: 750;
+}
+
+.admin-login-message {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  border-radius: 9px;
+  background:
+    var(
+      --theme-danger-soft,
+      var(--theme-surface-soft)
+    );
+  color: var(--theme-danger);
+  font-size: 0.84rem;
+}
+
+.admin-login-back {
+  display: inline-block;
+  margin-top: 20px;
+  color: var(--theme-muted);
+  font-size: 0.84rem;
+}
+
+.admin-lock-checking {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  background: var(--theme-bg);
+  color: var(--theme-muted);
+}

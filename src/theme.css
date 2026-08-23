@@ -704,3 +704,626 @@ html[data-theme='dark'] .app-theme-toggle:hover {
   background: #212d3b !important;
   color: #d8d9ff !important;
 }
+
+
+/* =========================================================
+   Final color normalization
+   Keep every screen on the same semantic palette.
+========================================================= */
+
+:root {
+  --theme-danger-soft: #fff0ee;
+  --theme-warning: #a15c00;
+  --theme-warning-soft: #fff7e6;
+  --theme-success: #237a3b;
+  --theme-success-soft: #eaf7ee;
+}
+
+html[data-theme='dark'] {
+  --theme-danger-soft: #4a2525;
+  --theme-warning: #ffc66d;
+  --theme-warning-soft: #49361e;
+  --theme-success: #79d59a;
+  --theme-success-soft: #203d2c;
+}
+
+/* Page and header surfaces */
+.library-page,
+.admin-page,
+.function-admin-page,
+.category-admin-page,
+.tag-admin-page,
+.new-function-page,
+.edit-function-page,
+.review-page,
+.library-layout {
+  background: var(--theme-bg) !important;
+  color: var(--theme-text) !important;
+}
+
+.library-header,
+.admin-header,
+.review-header {
+  border-color: var(--theme-border) !important;
+  background: var(--theme-surface) !important;
+  color: var(--theme-text) !important;
+}
+
+.library-header p,
+.admin-header p,
+.review-header p,
+.function-total,
+.category-path,
+.function-note-actions span,
+.admin-card p,
+.function-admin-item p,
+.review-question-meta,
+.review-card-footer span,
+.review-history-header p,
+.review-history-main small,
+.library-function-empty {
+  color: var(--theme-muted) !important;
+}
+
+/* Header navigation actions */
+.library-header-actions > a,
+.library-header > a,
+.admin-header > a,
+.admin-actions > a,
+.review-header > a {
+  border: 1px solid var(--theme-border) !important;
+  background: var(--theme-surface) !important;
+  color: var(--theme-text-soft) !important;
+}
+
+.library-header-actions > a:hover,
+.library-header > a:hover,
+.admin-header > a:hover,
+.admin-actions > a:hover,
+.review-header > a:hover {
+  border-color: var(--theme-accent) !important;
+  background: var(--theme-accent-soft) !important;
+  color: var(--theme-accent-strong) !important;
+  text-decoration: none;
+}
+
+/* Inputs and default controls */
+input,
+textarea,
+select,
+button {
+  border-color: var(--theme-border) !important;
+  background: var(--theme-surface) !important;
+  color: var(--theme-text-soft) !important;
+}
+
+button:hover {
+  border-color: var(--theme-border-strong) !important;
+  background: var(--theme-surface-soft) !important;
+  color: var(--theme-text) !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--theme-accent) !important;
+  box-shadow: 0 0 0 3px color-mix(
+    in srgb,
+    var(--theme-accent) 18%,
+    transparent
+  ) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--theme-muted) !important;
+}
+
+/* Detail page */
+.function-detail {
+  background: var(--theme-bg-elevated) !important;
+  color: var(--theme-text) !important;
+}
+
+.function-detail > p,
+.learning-status-control > strong {
+  color: var(--theme-text-soft) !important;
+}
+
+.favorite-button,
+.learning-status-option,
+.function-tag,
+.tag-option,
+.related-function-option,
+.variant-tabs button,
+.related-functions-list button,
+.library-reading-path button,
+.library-taxonomy-collapse,
+.library-change-category {
+  border-color: var(--theme-border) !important;
+  background: var(--theme-surface) !important;
+  color: var(--theme-text-soft) !important;
+}
+
+.favorite-button:hover,
+.learning-status-option:hover,
+.function-tag:hover,
+.tag-option:hover,
+.related-function-option:hover,
+.variant-tabs button:hover,
+.related-functions-list button:hover,
+.library-reading-path button:hover,
+.library-taxonomy-collapse:hover,
+.library-change-category:hover {
+  border-color: var(--theme-border-strong) !important;
+  background: var(--theme-surface-soft) !important;
+  color: var(--theme-text) !important;
+}
+
+.learning-status-option.active,
+.function-tag.active,
+.tag-option.active,
+.related-function-option.active,
+.variant-tabs button.active {
+  border-color: var(--theme-accent) !important;
+  background: var(--theme-accent-soft) !important;
+  color: var(--theme-accent-strong) !important;
+  box-shadow: none !important;
+}
+
+.tag-count,
+.view-count {
+  color: var(--theme-muted) !important;
+}
+
+.function-note,
+.related-functions {
+  border-color: var(--theme-border) !important;
+}
+
+.function-note textarea {
+  background: var(--theme-surface) !important;
+}
+
+/* Library top navigation */
+.library-workbench-search > input,
+.library-workbench-actions > select,
+.library-favorite-toggle,
+.library-quick-menu > summary,
+.library-taxonomy-option,
+.library-function-card {
+  border-color: var(--theme-border) !important;
+  background: var(--theme-surface) !important;
+  color: var(--theme-text-soft) !important;
+}
+
+.library-search-icon,
+.library-search-results-list small,
+.library-quick-menu-panel small,
+.library-search-empty,
+.library-taxonomy-header span,
+.library-taxonomy-label,
+.library-function-shelf-heading > div > span,
+.library-function-shelf-heading > span,
+.library-function-card-copy small,
+.library-reading-path-label,
+.library-reading-path-empty {
+  color: var(--theme-muted) !important;
+}
+
+.library-quick-menu-panel,
+.library-search-results,
+.library-taxonomy-panel {
+  border-color: var(--theme-border) !important;
+  background: var(--theme-surface) !important;
+  box-shadow: var(--theme-shadow) !important;
+}
+
+.library-search-results-heading,
+.library-quick-menu-title,
+.library-taxonomy-header,
+.library-taxonomy-row + .library-taxonomy-row {
+  border-color: var(--theme-border) !important;
+  color: var(--theme-text-soft) !important;
+}
+
+.library-search-results-list button,
+.library-quick-menu-panel > button,
+.library-quick-menu-title button {
+  background: transparent !important;
+  color: var(--theme-text-soft) !important;
+}
+
+.library-search-results-list button:hover,
+.library-quick-menu-panel > button:hover,
+.library-quick-menu-title button:hover {
+  background: var(--theme-surface-soft) !important;
+  color: var(--theme-text) !important;
+}
+
+.library-search-results-list button.active,
+.library-favorite-toggle.active,
+.library-quick-menu[open] > summary,
+.library-taxonomy-option.active,
+.library-function-card.active {
+  border-color: var(--theme-accent) !important;
+  background: var(--theme-accent-soft) !important;
+  color: var(--theme-accent-strong) !important;
+}
+
+.library-taxonomy-option:hover,
+.library-function-card:hover {
+  border-color: var(--theme-border-strong) !important;
+  background: var(--theme-surface-soft) !important;
+}
+
+.library-taxonomy-option small {
+  background: var(--theme-surface-strong) !important;
+  color: var(--theme-muted) !important;
+}
+
+.library-taxonomy-option.active small,
+.library-function-card-icon {
+  background: var(--theme-accent-soft-strong) !important;
+  color: var(--theme-accent-strong) !important;
+}
+
+.library-function-shelf {
+  border-color: var(--theme-border) !important;
+  background: var(--theme-surface-soft) !important;
+}
+
+.library-taxonomy-header strong,
+.library-function-shelf-heading strong,
+.library-function-card-copy strong {
+  color: var(--theme-text) !important;
+}
+
+.library-reading-path button + button::before {
+  color: var(--theme-muted) !important;
+}
+
+/* Legacy sidebar, kept coherent if it is reused */
+.sidebar {
+  border-color: var(--theme-border) !important;
+  background: var(--theme-surface) !important;
+  color: var(--theme-text) !important;
+}
+
+.favorite-filter,
+.function-tree-item,
+.uncategorized-title {
+  color: var(--theme-text-soft) !important;
+}
+
+.category-arrow,
+.category-count,
+.recent-functions-header button,
+.popular-functions-header button {
+  color: var(--theme-muted) !important;
+}
+
+.favorite-filter input {
+  accent-color: var(--theme-accent) !important;
+}
+
+.category-toggle,
+.function-tree-item,
+.recent-function-item,
+.popular-function-item,
+.active-filter button {
+  background: transparent !important;
+}
+
+.category-toggle:hover,
+.function-tree-item:hover,
+.recent-function-item:hover,
+.popular-function-item:hover {
+  background: var(--theme-surface-soft) !important;
+}
+
+.function-tree-item.active,
+.recent-function-item.active,
+.popular-function-item.active,
+.active-filter {
+  border-color: var(--theme-border) !important;
+  background: var(--theme-accent-soft) !important;
+  color: var(--theme-accent-strong) !important;
+}
+
+.recent-functions,
+.popular-functions {
+  border-color: var(--theme-border) !important;
+}
+
+/* Forms and admin */
+.new-function-page > form,
+.edit-function-page > form,
+.category-form-section,
+.category-tree-section,
+.tag-form-section,
+.tag-list-section,
+.function-admin-list,
+.function-admin-item,
+.admin-menu,
+.admin-card,
+.variant-form,
+.tag-selector,
+.related-function-selector,
+.category-admin-item,
+.tag-admin-item {
+  border-color: var(--theme-border) !important;
+  background: var(--theme-surface) !important;
+  color: var(--theme-text) !important;
+}
+
+.category-admin-item,
+.tag-admin-item {
+  background: var(--theme-surface-soft) !important;
+}
+
+.new-function-page > form > label,
+.edit-function-page > form > label,
+.category-form-section label,
+.tag-form-section label,
+.variant-form label {
+  color: var(--theme-text-soft) !important;
+}
+
+.new-function-page > form > p,
+.edit-function-page > form > p,
+.category-form-section > p,
+.tag-form-section > p {
+  background: var(--theme-surface-strong) !important;
+  color: var(--theme-text-soft) !important;
+}
+
+.new-function-page > form > button[type='submit'],
+.edit-function-page > form > button[type='submit'] {
+  border-color: var(--theme-accent) !important;
+  background: var(--theme-accent) !important;
+  color: #fff !important;
+}
+
+.new-function-page > form > button[type='submit']:hover,
+.edit-function-page > form > button[type='submit']:hover {
+  border-color: var(--theme-accent-strong) !important;
+  background: var(--theme-accent-strong) !important;
+  color: #fff !important;
+}
+
+.variant-form > button,
+.function-admin-actions button,
+.tag-admin-item button {
+  color: var(--theme-danger) !important;
+}
+
+.variant-form > button:hover,
+.function-admin-actions button:hover,
+.tag-admin-item button:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--theme-danger) 35%,
+    var(--theme-border)
+  ) !important;
+  background: var(--theme-danger-soft) !important;
+  color: var(--theme-danger) !important;
+}
+
+.category-slug,
+.tag-slug {
+  color: var(--theme-muted) !important;
+}
+
+/* Review page */
+.review-toolbar,
+.review-card,
+.review-history,
+.review-variant,
+.review-rating,
+.review-card-footer {
+  border-color: var(--theme-border) !important;
+}
+
+.review-card,
+.review-history {
+  background: var(--theme-surface) !important;
+  color: var(--theme-text) !important;
+  box-shadow: var(--theme-shadow-soft) !important;
+}
+
+.review-mode-options button,
+.review-rating button,
+.review-progress-summary span,
+.review-history-summary span,
+.review-history-item {
+  border-color: var(--theme-border) !important;
+  background: var(--theme-surface-soft) !important;
+  color: var(--theme-text-soft) !important;
+}
+
+.review-mode-options button:hover,
+.review-rating button:hover,
+.review-history-item:hover {
+  border-color: var(--theme-border-strong) !important;
+  background: var(--theme-surface-strong) !important;
+  color: var(--theme-text) !important;
+}
+
+.review-mode-options button.active,
+.review-rating button.active {
+  border-color: var(--theme-accent) !important;
+  background: var(--theme-accent-soft) !important;
+  color: var(--theme-accent-strong) !important;
+}
+
+.review-prompt {
+  background: var(--theme-accent-soft) !important;
+}
+
+.review-prompt strong {
+  color: var(--theme-accent-strong) !important;
+}
+
+.review-prompt p,
+.review-answer > p,
+.review-variant p {
+  color: var(--theme-text-soft) !important;
+}
+
+.review-variant,
+.review-rating,
+.review-card-footer {
+  border-color: var(--theme-border) !important;
+}
+
+.review-variant pre,
+.function-detail pre {
+  border-color: var(--theme-border) !important;
+  background: var(--theme-code-bg) !important;
+  color: var(--theme-text) !important;
+}
+
+.review-reveal-button {
+  border-color: var(--theme-accent) !important;
+  background: var(--theme-accent) !important;
+  color: #fff !important;
+}
+
+.review-reveal-button:hover {
+  border-color: var(--theme-accent-strong) !important;
+  background: var(--theme-accent-strong) !important;
+  color: #fff !important;
+}
+
+.review-history-empty {
+  background: var(--theme-surface-soft) !important;
+  color: var(--theme-muted) !important;
+}
+
+.review-result-badge.result-unlearned {
+  background: var(--theme-danger-soft) !important;
+  color: var(--theme-danger) !important;
+}
+
+.review-result-badge.result-learning {
+  background: var(--theme-warning-soft) !important;
+  color: var(--theme-warning) !important;
+}
+
+.review-result-badge.result-mastered {
+  background: var(--theme-success-soft) !important;
+  color: var(--theme-success) !important;
+}
+
+/* Dark mode: remove the last remaining hard-coded light surfaces. */
+html[data-theme='dark'] .library-header,
+html[data-theme='dark'] .admin-header,
+html[data-theme='dark'] .review-header,
+html[data-theme='dark'] .library-taxonomy-panel,
+html[data-theme='dark'] .library-search-results,
+html[data-theme='dark'] .library-quick-menu-panel,
+html[data-theme='dark'] .function-detail,
+html[data-theme='dark'] .review-card,
+html[data-theme='dark'] .review-history,
+html[data-theme='dark'] .new-function-page > form,
+html[data-theme='dark'] .edit-function-page > form,
+html[data-theme='dark'] .category-form-section,
+html[data-theme='dark'] .category-tree-section,
+html[data-theme='dark'] .tag-form-section,
+html[data-theme='dark'] .tag-list-section,
+html[data-theme='dark'] .function-admin-item,
+html[data-theme='dark'] .variant-form,
+html[data-theme='dark'] .tag-selector,
+html[data-theme='dark'] .related-function-selector,
+html[data-theme='dark'] .admin-card {
+  border-color: var(--theme-border) !important;
+  background: var(--theme-surface) !important;
+  color: var(--theme-text) !important;
+}
+
+html[data-theme='dark'] button,
+html[data-theme='dark'] .library-header-actions > a,
+html[data-theme='dark'] .review-header > a,
+html[data-theme='dark'] .admin-header > a,
+html[data-theme='dark'] .admin-actions > a,
+html[data-theme='dark'] .favorite-button,
+html[data-theme='dark'] .learning-status-option,
+html[data-theme='dark'] .function-tag,
+html[data-theme='dark'] .tag-option,
+html[data-theme='dark'] .related-function-option,
+html[data-theme='dark'] .variant-tabs button,
+html[data-theme='dark'] .library-taxonomy-option,
+html[data-theme='dark'] .library-function-card,
+html[data-theme='dark'] .library-favorite-toggle,
+html[data-theme='dark'] .library-quick-menu > summary,
+html[data-theme='dark'] .library-reading-path button,
+html[data-theme='dark'] .review-mode-options button,
+html[data-theme='dark'] .review-rating button {
+  border-color: var(--theme-border) !important;
+  background: var(--theme-surface-soft) !important;
+  color: var(--theme-text-soft) !important;
+}
+
+html[data-theme='dark'] button:hover,
+html[data-theme='dark'] .library-header-actions > a:hover,
+html[data-theme='dark'] .review-header > a:hover,
+html[data-theme='dark'] .admin-header > a:hover,
+html[data-theme='dark'] .admin-actions > a:hover,
+html[data-theme='dark'] .favorite-button:hover,
+html[data-theme='dark'] .learning-status-option:hover,
+html[data-theme='dark'] .function-tag:hover,
+html[data-theme='dark'] .tag-option:hover,
+html[data-theme='dark'] .related-function-option:hover,
+html[data-theme='dark'] .variant-tabs button:hover,
+html[data-theme='dark'] .library-taxonomy-option:hover,
+html[data-theme='dark'] .library-function-card:hover,
+html[data-theme='dark'] .library-favorite-toggle:hover,
+html[data-theme='dark'] .library-quick-menu > summary:hover,
+html[data-theme='dark'] .library-reading-path button:hover,
+html[data-theme='dark'] .review-mode-options button:hover,
+html[data-theme='dark'] .review-rating button:hover {
+  border-color: var(--theme-border-strong) !important;
+  background: var(--theme-surface-strong) !important;
+  color: var(--theme-text) !important;
+}
+
+html[data-theme='dark'] .learning-status-option.active,
+html[data-theme='dark'] .function-tag.active,
+html[data-theme='dark'] .tag-option.active,
+html[data-theme='dark'] .related-function-option.active,
+html[data-theme='dark'] .variant-tabs button.active,
+html[data-theme='dark'] .library-favorite-toggle.active,
+html[data-theme='dark'] .library-quick-menu[open] > summary,
+html[data-theme='dark'] .library-taxonomy-option.active,
+html[data-theme='dark'] .library-function-card.active,
+html[data-theme='dark'] .review-mode-options button.active,
+html[data-theme='dark'] .review-rating button.active,
+html[data-theme='dark'] .library-search-results-list button.active {
+  border-color: var(--theme-accent) !important;
+  background: var(--theme-accent-soft) !important;
+  color: var(--theme-accent-strong) !important;
+}
+
+html[data-theme='dark'] .library-taxonomy-option.active small,
+html[data-theme='dark'] .library-function-card-icon {
+  background: var(--theme-accent-soft-strong) !important;
+  color: var(--theme-accent-strong) !important;
+}
+
+html[data-theme='dark'] .app-theme-toggle {
+  border-color: var(--theme-border-strong) !important;
+  background: var(--theme-surface) !important;
+  color: var(--theme-text) !important;
+}
+
+html[data-theme='dark'] .app-theme-toggle:hover {
+  border-color: var(--theme-accent) !important;
+  background: var(--theme-surface-strong) !important;
+  color: var(--theme-accent-strong) !important;
+}
+
+html[data-theme='dark'] .app-theme-toggle-icon {
+  background: #3a3421 !important;
+  color: #ffd36e !important;
+}

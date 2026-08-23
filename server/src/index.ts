@@ -1,12 +1,26 @@
 import express from 'express';
 import cors from 'cors';
 
+import {
+  adminLogin,
+  adminLogout,
+  adminSession,
+  protectAdminWrites,
+} from './adminAuth.js';
 import { prisma } from './lib/prisma.js';
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.post('/api/admin/login', adminLogin);
+app.get('/api/admin/session', adminSession);
+app.post('/api/admin/logout', adminLogout);
+
+app.use('/api/functions', protectAdminWrites);
+app.use('/api/categories', protectAdminWrites);
+app.use('/api/tags', protectAdminWrites);
 
 app.get('/api/health', (_request, response) => {
   response.json({

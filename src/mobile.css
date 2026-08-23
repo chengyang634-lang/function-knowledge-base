@@ -1,0 +1,907 @@
+/*
+ * Android tablet layout
+ * Desktop web remains unchanged.
+ */
+
+html[data-platform='android'] {
+  min-height: 100%;
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+}
+
+html[data-platform='android'] body,
+html[data-platform='android'] #root {
+  min-height: 100dvh;
+}
+
+html[data-platform='android'] button,
+html[data-platform='android'] a,
+html[data-platform='android'] summary,
+html[data-platform='android'] select {
+  touch-action: manipulation;
+}
+
+html[data-platform='android'] input,
+html[data-platform='android'] textarea {
+  font-size: 16px;
+}
+
+/* =========================================================
+   Android header
+========================================================= */
+
+html[data-platform='android'] .library-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  min-height: 68px;
+  padding:
+    max(12px, env(safe-area-inset-top))
+    max(18px, env(safe-area-inset-right))
+    12px
+    max(18px, env(safe-area-inset-left));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+html[data-platform='android'] .library-header h1 {
+  margin-bottom: 2px;
+  font-size: 1.35rem;
+}
+
+html[data-platform='android'] .library-header p {
+  font-size: 0.82rem;
+}
+
+html[data-platform='android'] .library-header-actions {
+  gap: 8px;
+}
+
+html[data-platform='android'] .library-header-actions > a {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 11px;
+}
+
+/* =========================================================
+   Landscape tablet: navigation left, reader right
+========================================================= */
+
+@media
+  (min-width: 900px)
+  and (orientation: landscape) {
+
+  html[data-platform='android'] .library-layout {
+    display: grid;
+    grid-template-columns:
+      clamp(300px, 30vw, 390px)
+      minmax(0, 1fr);
+    grid-template-rows:
+      auto
+      minmax(0, 1fr);
+    min-height:
+      calc(100dvh - 68px);
+    align-items: stretch;
+    background: var(--theme-bg);
+  }
+
+  html[data-platform='android'] .library-top-nav {
+    display: contents;
+  }
+
+  /* Search / sort / favorite becomes the top of the left rail. */
+  html[data-platform='android'] .library-workbench {
+    grid-column: 1;
+    grid-row: 1;
+    z-index: 20;
+    width: auto;
+    margin: 0;
+    padding: 16px 14px 10px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    border-right:
+      1px solid var(--theme-border);
+    background:
+      var(--theme-surface);
+  }
+
+  html[data-platform='android']
+    .library-workbench-search {
+    min-width: 0;
+    flex: none;
+  }
+
+  html[data-platform='android']
+    .library-workbench-search > input {
+    height: 46px;
+    border-radius: 12px;
+  }
+
+  html[data-platform='android']
+    .library-workbench-actions {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, 1fr);
+    gap: 8px;
+    overflow: visible;
+    padding: 0;
+  }
+
+  html[data-platform='android']
+    .library-workbench-actions > select,
+  html[data-platform='android']
+    .library-favorite-toggle,
+  html[data-platform='android']
+    .library-quick-menu {
+    width: 100%;
+    min-width: 0;
+  }
+
+  html[data-platform='android']
+    .library-workbench-actions > select,
+  html[data-platform='android']
+    .library-favorite-toggle,
+  html[data-platform='android']
+    .library-quick-menu > summary {
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+  }
+
+  html[data-platform='android']
+    .library-quick-menu-panel {
+    right: auto;
+    left: 0;
+    width:
+      min(340px, calc(100vw - 40px));
+  }
+
+  html[data-platform='android']
+    .library-search-results {
+    left: 0;
+    right: 0;
+  }
+
+  /* Category browser becomes the scrollable left rail. */
+  html[data-platform='android']
+    .library-taxonomy-panel {
+    grid-column: 1;
+    grid-row: 2;
+    width: auto;
+    min-width: 0;
+    height: 100%;
+    max-height:
+      calc(100dvh - 68px - 154px);
+    margin: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border:
+      0;
+    border-right:
+      1px solid var(--theme-border);
+    border-radius: 0;
+    box-shadow: none !important;
+    background:
+      var(--theme-surface) !important;
+  }
+
+  html[data-platform='android']
+    .library-taxonomy-header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    padding: 14px 16px 12px;
+    background:
+      var(--theme-surface) !important;
+  }
+
+  html[data-platform='android']
+    .library-taxonomy-header > div {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+
+  html[data-platform='android']
+    .library-taxonomy-header span {
+    white-space: normal;
+    line-height: 1.45;
+  }
+
+  html[data-platform='android']
+    .library-taxonomy-collapse {
+    display: none;
+  }
+
+  html[data-platform='android']
+    .library-taxonomy-rows {
+    padding: 8px 0 4px;
+  }
+
+  html[data-platform='android']
+    .library-taxonomy-row {
+    display: block;
+    min-height: 0;
+    padding: 10px 14px;
+  }
+
+  html[data-platform='android']
+    .library-taxonomy-label {
+    padding: 0 2px 8px;
+    font-size: 0.76rem;
+    letter-spacing: 0.03em;
+  }
+
+  html[data-platform='android']
+    .library-taxonomy-options {
+    display: grid;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    padding: 0;
+  }
+
+  html[data-platform='android']
+    .library-taxonomy-option {
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    justify-content: space-between;
+    padding: 8px 10px;
+    white-space: normal;
+    text-align: left;
+  }
+
+  html[data-platform='android']
+    .library-taxonomy-option > span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  html[data-platform='android']
+    .library-function-shelf {
+    margin: 8px 12px 18px;
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  html[data-platform='android']
+    .library-function-shelf-heading {
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  html[data-platform='android']
+    .library-function-shelf-heading > div {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  html[data-platform='android']
+    .library-function-grid {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  html[data-platform='android']
+    .library-function-card {
+    min-height: 52px;
+    padding: 9px 10px;
+  }
+
+  /* The actual reading area gets almost all remaining width. */
+  html[data-platform='android']
+    .library-layout > .function-detail {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    width: 100%;
+    min-width: 0;
+    min-height:
+      calc(100dvh - 68px);
+    padding:
+      28px
+      clamp(26px, 4vw, 58px)
+      max(
+        72px,
+        calc(
+          42px +
+          env(safe-area-inset-bottom)
+        )
+      );
+    overflow-x: hidden;
+    background:
+      var(--theme-bg-elevated) !important;
+  }
+
+  html[data-platform='android']
+    .function-detail > * {
+    max-width: 1180px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  html[data-platform='android']
+    .function-title-row {
+    position: sticky;
+    top: 0;
+    z-index: 8;
+    margin:
+      -28px
+      calc(-1 * clamp(26px, 4vw, 58px))
+      20px;
+    padding:
+      18px
+      clamp(26px, 4vw, 58px)
+      14px;
+    background:
+      color-mix(
+        in srgb,
+        var(--theme-bg-elevated) 94%,
+        transparent
+      );
+    border-bottom:
+      1px solid var(--theme-border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  html[data-platform='android']
+    .function-title-row h1 {
+    font-size:
+      clamp(1.65rem, 2.5vw, 2.3rem);
+  }
+
+  html[data-platform='android']
+    .function-title-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  html[data-platform='android']
+    .learning-status-control {
+    margin-bottom: 16px;
+  }
+
+  html[data-platform='android']
+    .function-detail pre {
+    max-height: 58dvh;
+    overflow: auto !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    border-radius: 14px !important;
+  }
+
+  html[data-platform='android']
+    .function-detail pre code {
+    font-size:
+      clamp(0.9rem, 1.2vw, 1rem);
+    line-height: 1.65 !important;
+  }
+
+  html[data-platform='android']
+    .function-note textarea {
+    min-height: 220px;
+  }
+
+  /* In landscape the category browser should always stay open.
+     Hide the collapsed strip if its state happens to be active. */
+  html[data-platform='android']
+    .library-reading-strip {
+    display: none !important;
+  }
+
+  html[data-platform='android']
+    .library-top-nav.taxonomy-collapsed
+    ~ .function-detail {
+    grid-column: 2;
+    grid-row: 1 / 3;
+  }
+}
+
+/* =========================================================
+   Portrait tablet: compact controls, category sheet, reader
+========================================================= */
+
+@media
+  (min-width: 700px)
+  and (max-width: 1100px)
+  and (orientation: portrait) {
+
+  html[data-platform='android']
+    .library-layout {
+    display: block;
+    min-height:
+      calc(100dvh - 68px);
+  }
+
+  html[data-platform='android']
+    .library-workbench,
+  html[data-platform='android']
+    .library-taxonomy-panel,
+  html[data-platform='android']
+    .library-reading-strip {
+    width:
+      min(100% - 28px, 980px);
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  html[data-platform='android']
+    .library-workbench {
+    padding: 14px 0 10px;
+  }
+
+  html[data-platform='android']
+    .library-workbench-actions {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  html[data-platform='android']
+    .library-taxonomy-panel {
+    margin-bottom: 14px;
+    max-height: 42dvh;
+    overflow-y: auto;
+  }
+
+  html[data-platform='android']
+    .library-taxonomy-row {
+    grid-template-columns:
+      82px minmax(0, 1fr);
+  }
+
+  html[data-platform='android']
+    .library-taxonomy-options {
+    gap: 7px;
+  }
+
+  html[data-platform='android']
+    .library-layout > .function-detail {
+    width: 100%;
+    padding:
+      28px
+      clamp(28px, 5vw, 52px)
+      max(
+        74px,
+        calc(
+          44px +
+          env(safe-area-inset-bottom)
+        )
+      );
+  }
+
+  html[data-platform='android']
+    .function-detail pre {
+    max-height: 52dvh;
+  }
+}
+
+/* =========================================================
+   Phone fallback
+========================================================= */
+
+@media (max-width: 699px) {
+  html[data-platform='android']
+    .library-header,
+  html[data-platform='android']
+    .admin-header,
+  html[data-platform='android']
+    .review-header {
+    padding-top:
+      max(
+        14px,
+        env(safe-area-inset-top)
+      );
+    padding-right:
+      max(
+        16px,
+        env(safe-area-inset-right)
+      );
+    padding-left:
+      max(
+        16px,
+        env(safe-area-inset-left)
+      );
+  }
+
+  html[data-platform='android']
+    .library-workbench,
+  html[data-platform='android']
+    .library-taxonomy-panel,
+  html[data-platform='android']
+    .library-reading-strip {
+    width:
+      min(100% - 20px, 720px);
+  }
+
+  html[data-platform='android']
+    .library-workbench-actions {
+    overflow-x: auto;
+  }
+
+  html[data-platform='android']
+    .function-detail {
+    padding:
+      22px
+      16px
+      max(
+        70px,
+        calc(
+          40px +
+          env(safe-area-inset-bottom)
+        )
+      );
+  }
+
+  html[data-platform='android']
+    .function-title-row {
+    gap: 12px;
+  }
+}
+
+/* =========================================================
+   Shared Android touch / safe-area polish
+========================================================= */
+
+@media (pointer: coarse) {
+  html[data-platform='android'] button,
+  html[data-platform='android'] summary,
+  html[data-platform='android']
+    .library-taxonomy-option,
+  html[data-platform='android']
+    .library-reading-path button {
+    min-height: 44px;
+  }
+
+  html[data-platform='android']
+    .function-tag,
+  html[data-platform='android']
+    .tag-option,
+  html[data-platform='android']
+    .related-function-option,
+  html[data-platform='android']
+    .learning-status-option {
+    min-height: 40px;
+    padding-right: 13px;
+    padding-left: 13px;
+  }
+}
+
+html[data-platform='android']
+  .app-theme-toggle {
+  right:
+    max(
+      18px,
+      env(safe-area-inset-right)
+    );
+  bottom:
+    max(
+      18px,
+      env(safe-area-inset-bottom)
+    );
+}
+
+html[data-platform='android']
+  .review-page,
+html[data-platform='android']
+  .admin-page,
+html[data-platform='android']
+  .new-function-page,
+html[data-platform='android']
+  .edit-function-page,
+html[data-platform='android']
+  .category-admin-page,
+html[data-platform='android']
+  .tag-admin-page,
+html[data-platform='android']
+  .function-admin-page {
+  padding-bottom:
+    max(
+      64px,
+      calc(
+        32px +
+        env(safe-area-inset-bottom)
+      )
+    );
+}
+
+
+/* =========================================================
+   Final Android tablet polish
+   Keeps desktop web untouched.
+========================================================= */
+
+@media (min-width: 900px) and (orientation: landscape) {
+  html[data-platform='android'] .library-workbench {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    gap: 10px;
+  }
+
+  html[data-platform='android']
+    .library-workbench-search > input {
+    height: 46px;
+    border-radius: 13px;
+  }
+
+  html[data-platform='android']
+    .library-workbench-actions {
+    gap: 7px;
+  }
+
+  html[data-platform='android']
+    .library-workbench-actions > select,
+  html[data-platform='android']
+    .library-favorite-toggle,
+  html[data-platform='android']
+    .library-quick-menu > summary {
+    min-height: 42px;
+    border-radius: 11px;
+    box-shadow: none !important;
+  }
+
+  /*
+   * Collapsed category path:
+   * make it feel like a compact reading breadcrumb,
+   * not another admin toolbar.
+   */
+  html[data-platform='android']
+    .library-reading-strip {
+    display: flex !important;
+    width: calc(100% - 60px);
+    min-height: 54px;
+    margin:
+      8px auto 0;
+    padding: 8px 12px;
+    border:
+      1px solid var(--theme-border);
+    border-radius: 13px;
+    background:
+      var(--theme-surface) !important;
+    box-shadow:
+      0 5px 18px
+      rgba(0, 0, 0, 0.08);
+  }
+
+  html[data-platform='android']
+    .library-reading-path {
+    gap: 5px;
+    min-height: 38px;
+  }
+
+  html[data-platform='android']
+    .library-reading-path-label {
+    margin-right: 8px;
+    color: var(--theme-muted) !important;
+    font-size: 0.78rem;
+    letter-spacing: 0.01em;
+  }
+
+  html[data-platform='android']
+    .library-reading-path button {
+    min-height: 34px;
+    padding: 5px 10px;
+    border:
+      1px solid transparent !important;
+    border-radius: 9px;
+    background:
+      var(--theme-surface-soft) !important;
+    color:
+      var(--theme-text-soft) !important;
+    box-shadow: none !important;
+  }
+
+  html[data-platform='android']
+    .library-reading-path button:hover {
+    border-color:
+      var(--theme-border-strong) !important;
+    background:
+      var(--theme-surface-strong) !important;
+  }
+
+  html[data-platform='android']
+    .library-reading-path button:last-of-type {
+    border-color:
+      var(--theme-accent-soft-strong) !important;
+    background:
+      var(--theme-accent-soft) !important;
+    color:
+      var(--theme-accent-strong) !important;
+    font-weight: 700;
+  }
+
+  html[data-platform='android']
+    .library-reading-path button
+    + button::before {
+    left: -6px;
+    color: var(--theme-muted) !important;
+  }
+
+  html[data-platform='android']
+    .library-change-category {
+    min-height: 36px;
+    padding: 6px 11px;
+    border:
+      1px solid var(--theme-border) !important;
+    border-radius: 9px;
+    background:
+      transparent !important;
+    color:
+      var(--theme-text-soft) !important;
+    box-shadow: none !important;
+    font-size: 0.84rem;
+  }
+
+  html[data-platform='android']
+    .library-change-category:hover {
+    border-color:
+      var(--theme-border-strong) !important;
+    background:
+      var(--theme-surface-soft) !important;
+    color:
+      var(--theme-text) !important;
+  }
+
+  /*
+   * Detail content:
+   * reduce empty vertical space and center the readable column.
+   */
+  html[data-platform='android']
+    .library-layout > .function-detail {
+    padding-top: 22px;
+  }
+
+  html[data-platform='android']
+    .function-detail > * {
+    width: 100%;
+    max-width: 1180px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  /*
+   * Biggest visual problem in the screenshot:
+   * title stays left; both actions stay together on the right.
+   */
+  html[data-platform='android']
+    .function-title-row {
+    position: static;
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1fr)
+      auto
+      auto;
+    align-items: center;
+    justify-content: stretch;
+    gap: 8px;
+    margin:
+      0 auto 18px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  html[data-platform='android']
+    .function-title-row h1 {
+    min-width: 0;
+    margin: 0;
+    padding-right: 18px;
+    overflow-wrap: anywhere;
+    font-size:
+      clamp(1.8rem, 2.5vw, 2.3rem);
+  }
+
+  html[data-platform='android']
+    .function-title-row
+    .favorite-button {
+    min-height: 40px;
+    padding: 7px 12px;
+    border:
+      1px solid var(--theme-border) !important;
+    border-radius: 10px;
+    background:
+      var(--theme-surface) !important;
+    color:
+      var(--theme-text-soft) !important;
+    box-shadow: none !important;
+  }
+
+  html[data-platform='android']
+    .function-title-row
+    .favorite-button:hover {
+    border-color:
+      var(--theme-border-strong) !important;
+    background:
+      var(--theme-surface-soft) !important;
+    color:
+      var(--theme-text) !important;
+  }
+
+  html[data-platform='android']
+    .learning-status-control {
+    padding: 10px 12px;
+    border:
+      1px solid var(--theme-border);
+    border-radius: 12px;
+    background:
+      var(--theme-surface);
+  }
+
+  html[data-platform='android']
+    .learning-status-option {
+    box-shadow: none !important;
+  }
+
+  html[data-platform='android']
+    .category-path {
+    padding: 8px 10px;
+    border-radius: 9px;
+    background:
+      var(--theme-surface-soft);
+  }
+
+  html[data-platform='android']
+    .function-detail pre {
+    border:
+      1px solid var(--theme-border);
+    box-shadow:
+      0 8px 24px
+      rgba(0, 0, 0, 0.08);
+  }
+
+  html[data-platform='android']
+    .variant-header {
+    margin-top: 24px;
+    margin-bottom: 10px;
+  }
+}
+
+@media (min-width: 700px) and (orientation: portrait) {
+  html[data-platform='android']
+    .function-title-row {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1fr)
+      auto
+      auto;
+    align-items: center;
+    gap: 8px;
+  }
+
+  html[data-platform='android']
+    .function-title-row h1 {
+    min-width: 0;
+    padding-right: 8px;
+  }
+
+  html[data-platform='android']
+    .function-title-row
+    .favorite-button {
+    min-height: 40px;
+    padding: 7px 10px;
+  }
+}
+
+@media (max-width: 760px) {
+  html[data-platform='android']
+    .function-title-row {
+    display: flex;
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+
+  html[data-platform='android']
+    .function-title-row h1 {
+    width: 100%;
+  }
+}
