@@ -427,7 +427,7 @@ function FunctionDetail({
               }
             >
               {copied
-                ? 'âœ“ å·²复制'
+                ? '✓ 已复制'
                 : '复制'}
             </button>
           </div>
@@ -495,7 +495,7 @@ function FunctionDetail({
                   event.target.value,
                 )
               }
-              placeholder="è®°å½•ä½ å¯¹è¿™ä¸ªå‡½æ•°çš„ç†è§£ã€æ³¨æ„äº‹é¡¹å’Œå¤ç”¨ç»éªŒ..."
+              placeholder="记录你对这个函数的理解、注意事项和复用经验..."
             />
 
             <div className="function-note-actions">

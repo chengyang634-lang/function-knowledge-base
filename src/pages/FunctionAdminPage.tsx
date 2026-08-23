@@ -5,6 +5,7 @@ import type {
   Category,
   FunctionEntry,
 } from '../types/function';
+import { apiUrl } from '../lib/api';
 
 function getCategoryPath(
   category: Category,
@@ -47,12 +48,20 @@ function FunctionAdminPage() {
         categoriesResponse,
       ] = await Promise.all([
         fetch(
-          'http://localhost:3000/api/functions',
+          apiUrl('/api/functions'),
         ),
         fetch(
-          'http://localhost:3000/api/categories',
+          apiUrl('/api/categories'),
         ),
       ]);
+
+      if (!functionsResponse.ok) {
+        throw new Error('加载函数失败');
+      }
+
+      if (!categoriesResponse.ok) {
+        throw new Error('加载分类失败');
+      }
 
       const functionData: FunctionEntry[] =
         await functionsResponse.json();
@@ -83,7 +92,7 @@ function FunctionAdminPage() {
     }
 
     const response = await fetch(
-      `http://localhost:3000/api/functions/${functionEntry.id}`,
+      apiUrl(`/api/functions/${functionEntry.id}`),
       {
         method: 'DELETE',
       },

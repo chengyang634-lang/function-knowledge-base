@@ -80,7 +80,7 @@ app.post('/api/functions', async (request, response) => {
 
   if (!name?.trim()) {
     return response.status(400).json({
-      message: 'è¯·è¾“å…¥å‡½æ•°å',
+      message: '请输入函数名',
     });
   }
 
@@ -89,7 +89,7 @@ app.post('/api/functions', async (request, response) => {
     variants.length === 0
   ) {
     return response.status(400).json({
-      message: 'è‡³å°‘éœ€è¦ä¸€ç§å†™æ³•',
+      message: '至少需要一种写法',
     });
   }
 
@@ -102,7 +102,7 @@ app.post('/api/functions', async (request, response) => {
           description:
             description?.trim() || null,
 
-          // æ—§å­—æ®µæš‚æ—¶ä¿ç•™
+          // 旧字段暂时保留
           language: '',
           category: null,
 
@@ -180,7 +180,7 @@ app.put('/api/functions/:id', async (request, response) => {
 
   if (!name?.trim()) {
     return response.status(400).json({
-      message: 'è¯·è¾“å…¥å‡½æ•°å',
+      message: '请输入函数名',
     });
   }
 
@@ -189,7 +189,7 @@ app.put('/api/functions/:id', async (request, response) => {
     variants.length === 0
   ) {
     return response.status(400).json({
-      message: 'è‡³å°‘éœ€è¦ä¸€ç§å†™æ³•',
+      message: '至少需要一种写法',
     });
   }
 
@@ -231,30 +231,32 @@ app.put('/api/functions/:id', async (request, response) => {
                   : [],
               },
 
-              relatedFunctions: {
-                set: Array.isArray(
-                  relatedFunctionIds,
-                )
-                  ? relatedFunctionIds
-                      .filter(
-                        (
-                          relatedFunctionId:
-                            number,
-                        ) =>
-                          relatedFunctionId !==
-                          id,
-                      )
-                      .map(
-                        (
-                          relatedFunctionId:
-                            number,
-                        ) => ({
-                          id:
-                            relatedFunctionId,
-                        }),
-                      )
-                  : [],
-              },
+              ...(Array.isArray(
+                relatedFunctionIds,
+              )
+                ? {
+                    relatedFunctions: {
+                      set: relatedFunctionIds
+                        .filter(
+                          (
+                            relatedFunctionId:
+                              number,
+                          ) =>
+                            relatedFunctionId !==
+                            id,
+                        )
+                        .map(
+                          (
+                            relatedFunctionId:
+                              number,
+                          ) => ({
+                            id:
+                              relatedFunctionId,
+                          }),
+                        ),
+                    },
+                  }
+                : {}),
             },
 
             include: {
@@ -322,7 +324,7 @@ app.patch(
       console.error(error);
 
       response.status(500).json({
-        message: 'æ›´æ–°收藏çŠ¶æ€å¤±è´¥',
+        message: '更新收藏状态失败',
       });
     }
   },
@@ -379,7 +381,7 @@ app.patch(
       console.error(error);
 
       response.status(500).json({
-        message: '保存笔记å¤±è´¥',
+        message: '保存笔记失败',
       });
     }
   },
@@ -454,7 +456,7 @@ app.post('/api/categories', async (request, response) => {
 
   if (!name?.trim()) {
     return response.status(400).json({
-      message: 'è¯·è¾“å…¥åˆ†ç±»åç§°',
+      message: '请输入分类名称',
     });
   }
 
@@ -502,6 +504,18 @@ app.put('/api/categories/:id', async (request, response) => {
     parentId,
   } = request.body;
 
+  if (!name?.trim()) {
+    return response.status(400).json({
+      message: '请输入分类名称',
+    });
+  }
+
+  if (!slug?.trim()) {
+    return response.status(400).json({
+      message: '请输入分类 slug',
+    });
+  }
+
   const nextParentId =
     parentId == null
       ? null
@@ -519,7 +533,7 @@ app.put('/api/categories/:id', async (request, response) => {
   if (nextParentId === id) {
     return response.status(400).json({
       message:
-        'åˆ†ç±»ä¸èƒ½æˆä¸ºè‡ªå·±çš„çˆ¶åˆ†ç±»',
+        '分类不能成为自己的父分类',
     });
   }
 
@@ -553,7 +567,7 @@ app.put('/api/categories/:id', async (request, response) => {
           .status(409)
           .json({
             message:
-              'ä¸èƒ½æŠŠåˆ†ç±»ç§»åŠ¨åˆ°è‡ªå·±çš„å­åˆ†ç±»ä¸‹é¢',
+              '不能把分类移动到自己的子分类下面',
           });
       }
 
@@ -577,7 +591,7 @@ app.put('/api/categories/:id', async (request, response) => {
           .status(400)
           .json({
             message:
-              'çˆ¶åˆ†ç±»ä¸å­˜åœ¨',
+              '父分类不存在',
           });
       }
 
@@ -643,7 +657,7 @@ app.delete('/api/categories/:id', async (request, response) => {
   ) {
     return response.status(409).json({
       message:
-        'è¯¥åˆ†ç±»ä¸‹é¢è¿˜æœ‰å­åˆ†ç±»ï¼Œä¸èƒ½åˆ é™¤',
+        '该分类下面还有子分类，不能删除',
     });
   }
 
@@ -652,7 +666,7 @@ app.delete('/api/categories/:id', async (request, response) => {
   ) {
     return response.status(409).json({
       message:
-        'è¯¥åˆ†ç±»ä¸‹é¢è¿˜æœ‰å‡½æ•°ï¼Œä¸èƒ½åˆ é™¤',
+        '该分类下面还有函数，不能删除',
     });
   }
 
@@ -696,7 +710,7 @@ app.post('/api/tags', async (request, response) => {
 
   if (!name?.trim()) {
     return response.status(400).json({
-      message: 'è¯·è¾“å…¥æ ‡ç­¾åç§°',
+      message: '请输入标签名称',
     });
   }
 
@@ -758,7 +772,7 @@ app.delete('/api/tags/:id', async (request, response) => {
   ) {
     return response.status(409).json({
       message:
-        'è¯¥æ ‡ç­¾ä»è¢«å‡½æ•°ä½¿ç”¨ï¼Œä¸èƒ½åˆ é™¤',
+        '该标签仍被函数使用，不能删除',
     });
   }
 
@@ -783,8 +797,11 @@ app.delete('/api/tags/:id', async (request, response) => {
    Server
 ========================= */
 
-app.listen(3000, () => {
+const port =
+  Number(process.env.PORT) || 3000;
+
+app.listen(port, () => {
   console.log(
-    'Server running on http://localhost:3000',
+    `Server running on http://localhost:${port}`,
   );
 });

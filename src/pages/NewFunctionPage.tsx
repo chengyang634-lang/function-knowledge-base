@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import FunctionForm, {
   type FunctionFormValue,
 } from '../components/FunctionForm';
+import { apiUrl } from '../lib/api';
 
 function NewFunctionPage() {
   const [
@@ -16,7 +17,7 @@ function NewFunctionPage() {
   ) {
     const response =
       await fetch(
-        'http://localhost:3000/api/functions',
+        apiUrl('/api/functions'),
         {
           method: 'POST',
 

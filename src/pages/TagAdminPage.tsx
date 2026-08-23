@@ -5,6 +5,7 @@ import {
 } from 'react';
 
 import { Link } from 'react-router-dom';
+import { apiUrl } from '../lib/api';
 
 type Tag = {
   id: number;
@@ -30,7 +31,7 @@ function TagAdminPage() {
 
   async function loadTags() {
     const response = await fetch(
-      'http://localhost:3000/api/tags',
+      apiUrl('/api/tags'),
     );
 
     if (!response.ok) {
@@ -70,7 +71,7 @@ function TagAdminPage() {
       setMessage('');
 
       const response = await fetch(
-        'http://localhost:3000/api/tags',
+        apiUrl('/api/tags'),
         {
           method: 'POST',
 
@@ -132,7 +133,7 @@ function TagAdminPage() {
       setMessage('');
 
       const response = await fetch(
-        `http://localhost:3000/api/tags/${tag.id}`,
+        apiUrl(`/api/tags/${tag.id}`),
         {
           method: 'DELETE',
         },

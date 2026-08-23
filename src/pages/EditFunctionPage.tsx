@@ -12,6 +12,7 @@ import {
 import FunctionForm, {
   type FunctionFormValue,
 } from '../components/FunctionForm';
+import { apiUrl } from '../lib/api';
 
 import type {
   FunctionEntry,
@@ -63,7 +64,7 @@ function EditFunctionPage() {
       try {
         const response =
           await fetch(
-            `http://localhost:3000/api/functions/${functionId}`,
+            apiUrl(`/api/functions/${functionId}`),
           );
 
         if (!response.ok) {
@@ -140,7 +141,7 @@ function EditFunctionPage() {
   ) {
     const response =
       await fetch(
-        `http://localhost:3000/api/functions/${functionId}`,
+        apiUrl(`/api/functions/${functionId}`),
         {
           method: 'PUT',
 

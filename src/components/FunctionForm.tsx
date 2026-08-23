@@ -8,6 +8,7 @@ import type {
   Category,
   Tag,
 } from '../types/function';
+import { apiUrl } from '../lib/api';
 
 export type VariantForm = {
   name: string;
@@ -136,11 +137,11 @@ function FunctionForm({
         tagsResponse,
       ] = await Promise.all([
         fetch(
-          'http://localhost:3000/api/categories',
+          apiUrl('/api/categories'),
         ),
 
         fetch(
-          'http://localhost:3000/api/tags',
+          apiUrl('/api/tags'),
         ),
       ]);
 

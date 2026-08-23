@@ -8,6 +8,7 @@ import type {
   Category,
   FunctionEntry,
 } from '../types/function';
+import { apiUrl } from '../lib/api';
 
 export type FunctionSort =
   | 'newest'
@@ -152,13 +153,21 @@ function FunctionLibraryPage() {
       ] =
         await Promise.all([
           fetch(
-            'http://localhost:3000/api/functions',
+            apiUrl('/api/functions'),
           ),
 
           fetch(
-            'http://localhost:3000/api/categories',
+            apiUrl('/api/categories'),
           ),
         ]);
+
+      if (!functionsResponse.ok) {
+        throw new Error('加载函数失败');
+      }
+
+      if (!categoriesResponse.ok) {
+        throw new Error('加载分类失败');
+      }
 
       const functionData:
         FunctionEntry[] =
@@ -197,10 +206,29 @@ function FunctionLibraryPage() {
                   linkedFunctionId,
               );
 
-        setSelectedFunction(
+        const initialFunction =
           linkedFunction ??
-            functionData[0],
-        );
+          functionData[0];
+
+        if (initialFunction) {
+          setSelectedFunction(
+            initialFunction,
+          );
+
+          const url =
+            new URL(window.location.href);
+
+          url.searchParams.set(
+            'function',
+            String(initialFunction.id),
+          );
+
+          window.history.replaceState(
+            {},
+            '',
+            url,
+          );
+        }
       }
     }
 
@@ -563,7 +591,7 @@ function FunctionLibraryPage() {
     note: string,
   ) {
     const response = await fetch(
-      `http://localhost:3000/api/functions/${functionEntry.id}/note`,
+      apiUrl(`/api/functions/${functionEntry.id}/note`),
       {
         method: 'PATCH',
 
@@ -612,7 +640,7 @@ function FunctionLibraryPage() {
 
     const response =
       await fetch(
-        `http://localhost:3000/api/functions/${functionEntry.id}/favorite`,
+        apiUrl(`/api/functions/${functionEntry.id}/favorite`),
         {
           method: 'PATCH',
 
@@ -630,6 +658,9 @@ function FunctionLibraryPage() {
       );
 
     if (!response.ok) {
+      window.alert(
+        '更新收藏状态失败',
+      );
       return;
     }
 
