@@ -47,12 +47,21 @@ function EditFunctionPage() {
   ] = useState('');
 
   useEffect(() => {
+    let active = true;
+
+    setLoading(true);
+    setInitialValue(null);
+    setMessage('');
+
     async function loadFunction() {
       if (
-        Number.isNaN(
+        !Number.isSafeInteger(
           functionId,
-        )
+        ) ||
+        functionId <= 0
       ) {
+        if (!active) return;
+
         setMessage(
           '无效的函数 ID',
         );
@@ -77,6 +86,10 @@ function EditFunctionPage() {
           FunctionEntry =
           await response.json();
 
+        if (!active) {
+          return;
+        }
+
         setInitialValue({
           name:
             data.name,
@@ -93,6 +106,12 @@ function EditFunctionPage() {
             data.tags.map(
               (tag) =>
                 tag.id,
+            ),
+
+          relatedFunctionIds:
+            data.relatedFunctions.map(
+              (relatedFunction) =>
+                relatedFunction.id,
             ),
 
           variants:
@@ -121,6 +140,10 @@ function EditFunctionPage() {
             ),
         });
       } catch (error) {
+        if (!active) {
+          return;
+        }
+
         console.error(
           error,
         );
@@ -129,11 +152,17 @@ function EditFunctionPage() {
           '加载函数失败',
         );
       } finally {
-        setLoading(false);
+        if (active) {
+          setLoading(false);
+        }
       }
     }
 
-    loadFunction();
+    void loadFunction();
+
+    return () => {
+      active = false;
+    };
   }, [functionId]);
 
   async function updateFunction(
@@ -164,6 +193,9 @@ function EditFunctionPage() {
 
               tagIds:
                 value.tagIds,
+
+              relatedFunctionIds:
+                value.relatedFunctionIds,
 
               variants:
                 value.variants.map(
@@ -256,6 +288,9 @@ function EditFunctionPage() {
       <FunctionForm
         initialValue={
           initialValue
+        }
+        currentFunctionId={
+          functionId
         }
         submitLabel="保存修改"
         onSubmit={

@@ -26,12 +26,19 @@ export type FunctionFormValue = {
   categoryId: number | null;
 
   tagIds: number[];
+  relatedFunctionIds: number[];
 
   variants: VariantForm[];
 };
 
+type FunctionOption = {
+  id: number;
+  name: string;
+};
+
 type FunctionFormProps = {
   initialValue?: FunctionFormValue;
+  currentFunctionId?: number;
 
   submitLabel: string;
 
@@ -69,6 +76,7 @@ function getCategoryPath(
 
 function FunctionForm({
   initialValue,
+  currentFunctionId,
   submitLabel,
   onSubmit,
   message,
@@ -100,6 +108,13 @@ function FunctionForm({
   );
 
   const [
+    selectedRelatedFunctionIds,
+    setSelectedRelatedFunctionIds,
+  ] = useState<number[]>(
+    initialValue?.relatedFunctionIds ?? [],
+  );
+
+  const [
     variants,
     setVariants,
   ] = useState<VariantForm[]>(
@@ -122,6 +137,11 @@ function FunctionForm({
   const [tags, setTags] =
     useState<Tag[]>([]);
 
+  const [
+    functionOptions,
+    setFunctionOptions,
+  ] = useState<FunctionOption[]>([]);
+
   const [saving, setSaving] =
     useState(false);
 
@@ -135,6 +155,7 @@ function FunctionForm({
       const [
         categoriesResponse,
         tagsResponse,
+        functionOptionsResponse,
       ] = await Promise.all([
         fetch(
           apiUrl('/api/categories'),
@@ -142,6 +163,10 @@ function FunctionForm({
 
         fetch(
           apiUrl('/api/tags'),
+        ),
+
+        fetch(
+          apiUrl('/api/function-options'),
         ),
       ]);
 
@@ -159,6 +184,12 @@ function FunctionForm({
         );
       }
 
+      if (!functionOptionsResponse.ok) {
+        throw new Error(
+          '加载相关函数选项失败',
+        );
+      }
+
       const categoryData:
         Category[] =
         await categoriesResponse.json();
@@ -166,11 +197,18 @@ function FunctionForm({
       const tagData: Tag[] =
         await tagsResponse.json();
 
+      const functionOptionData:
+        FunctionOption[] =
+        await functionOptionsResponse.json();
+
       setCategories(
         categoryData,
       );
 
       setTags(tagData);
+      setFunctionOptions(
+        functionOptionData,
+      );
     }
 
     loadOptions().catch(
@@ -178,7 +216,7 @@ function FunctionForm({
         console.error(error);
 
         setFormMessage(
-          '加载分类或标签失败',
+          '加载分类、标签或相关函数失败',
         );
       },
     );
@@ -201,6 +239,25 @@ function FunctionForm({
         return [
           ...current,
           tagId,
+        ];
+      },
+    );
+  }
+
+  function toggleRelatedFunction(
+    functionId: number,
+  ) {
+    setSelectedRelatedFunctionIds(
+      (current) => {
+        if (current.includes(functionId)) {
+          return current.filter(
+            (id) => id !== functionId,
+          );
+        }
+
+        return [
+          ...current,
+          functionId,
         ];
       },
     );
@@ -282,6 +339,21 @@ function FunctionForm({
       return;
     }
 
+    const selectedCategoryHasChildren =
+      categories.some(
+        (category) =>
+          category.parentId ===
+          categoryId,
+      );
+
+    if (selectedCategoryHasChildren) {
+      setFormMessage(
+        '请选择最末级分类，父分类只能作为目录',
+      );
+
+      return;
+    }
+
     if (
       variants.length === 0
     ) {
@@ -322,6 +394,9 @@ function FunctionForm({
         tagIds:
           selectedTagIds,
 
+        relatedFunctionIds:
+          selectedRelatedFunctionIds,
+
         variants:
           variants.map(
             (variant) => ({
@@ -352,6 +427,12 @@ function FunctionForm({
       setSaving(false);
     }
   }
+
+  const availableFunctionOptions =
+    functionOptions.filter(
+      (option) =>
+        option.id !== currentFunctionId,
+    );
 
   return (
     <form onSubmit={handleSubmit}>
@@ -391,21 +472,34 @@ function FunctionForm({
           </option>
 
           {categories.map(
-            (category) => (
-              <option
-                key={
-                  category.id
-                }
-                value={
-                  category.id
-                }
-              >
-                {getCategoryPath(
-                  category,
-                  categories,
-                )}
-              </option>
-            ),
+            (category) => {
+              const hasChildren =
+                categories.some(
+                  (item) =>
+                    item.parentId ===
+                    category.id,
+                );
+
+              return (
+                <option
+                  key={
+                    category.id
+                  }
+                  value={
+                    category.id
+                  }
+                  disabled={hasChildren}
+                >
+                  {getCategoryPath(
+                    category,
+                    categories,
+                  )}
+                  {hasChildren
+                    ? '（分类组）'
+                    : ''}
+                </option>
+              );
+            },
           )}
         </select>
       </label>
@@ -457,6 +551,49 @@ function FunctionForm({
                     }
                   >
                     {tag.name}
+                  </button>
+                );
+              },
+            )}
+          </div>
+        )}
+      </section>
+
+      <section className="related-function-selector">
+        <h2>相关函数</h2>
+
+        <p>
+          选择与当前函数有直接知识关联的函数。
+        </p>
+
+        {availableFunctionOptions.length === 0 ? (
+          <p>暂无可关联函数。</p>
+        ) : (
+          <div className="related-function-options">
+            {availableFunctionOptions.map(
+              (option) => {
+                const selected =
+                  selectedRelatedFunctionIds.includes(
+                    option.id,
+                  );
+
+                return (
+                  <button
+                    key={option.id}
+                    type="button"
+                    className={
+                      selected
+                        ? 'related-function-option active'
+                        : 'related-function-option'
+                    }
+                    aria-pressed={selected}
+                    onClick={() =>
+                      toggleRelatedFunction(
+                        option.id,
+                      )
+                    }
+                  >
+                    {option.name}
                   </button>
                 );
               },

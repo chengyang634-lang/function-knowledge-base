@@ -215,7 +215,7 @@ h3 {
 
 .library-layout {
   display: grid;
-  grid-template-columns: 320px minmax(0, 1fr);
+  grid-template-columns: 440px minmax(0, 1fr);
   min-height: calc(100vh - 82px);
 }
 
@@ -249,7 +249,8 @@ h3 {
   margin-bottom: 10px;
 }
 
-.function-sort {
+.function-sort,
+.learning-status-filter {
   margin-bottom: 12px;
 }
 
@@ -454,6 +455,41 @@ h3 {
 .favorite-button {
   white-space: nowrap;
   background: #fff;
+}
+
+.learning-status-control {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 18px;
+}
+
+.learning-status-control > strong {
+  color: #4b5563;
+  font-size: 0.9rem;
+}
+
+.learning-status-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.learning-status-option {
+  width: auto;
+  min-height: 32px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 0.84rem;
+}
+
+.learning-status-option.active {
+  border-color: #8b8df4;
+  background: #eef0ff;
+  color: #3730a3;
+  font-weight: 700;
 }
 
 .category-path {

@@ -7,6 +7,7 @@ import {
 import type {
   Category,
   FunctionEntry,
+  LearningStatus,
 } from '../types/function';
 
 type FunctionDetailProps = {
@@ -20,6 +21,15 @@ type FunctionDetailProps = {
   onTagSelect: (
     tagId: number,
   ) => void;
+
+  onRelatedFunctionSelect: (
+    functionId: number,
+  ) => void;
+
+  onLearningStatusChange: (
+    functionEntry: FunctionEntry,
+    learningStatus: LearningStatus,
+  ) => Promise<void>;
 
   onToggleFavorite: (
     functionEntry: FunctionEntry,
@@ -179,6 +189,8 @@ function FunctionDetail({
   selectedTagId,
   tagCounts,
   onTagSelect,
+  onRelatedFunctionSelect,
+  onLearningStatusChange,
   onToggleFavorite,
   onSaveNote,
 }: FunctionDetailProps) {
@@ -328,6 +340,41 @@ function FunctionDetail({
             : '☆ 收藏'}
         </button>
       </div>
+
+      <section className="learning-status-control">
+        <strong>学习状态</strong>
+
+        <div className="learning-status-options">
+          {([
+            ['unlearned', '未学习'],
+            ['learning', '学习中'],
+            ['mastered', '已掌握'],
+          ] as const).map(
+            ([status, label]) => (
+              <button
+                key={status}
+                type="button"
+                className={
+                  functionEntry.learningStatus === status
+                    ? 'learning-status-option active'
+                    : 'learning-status-option'
+                }
+                aria-pressed={
+                  functionEntry.learningStatus === status
+                }
+                onClick={() =>
+                  void onLearningStatusChange(
+                    functionEntry,
+                    status,
+                  )
+                }
+              >
+                {label}
+              </button>
+            ),
+          )}
+        </div>
+      </section>
 
       {functionEntry.description && (
         <p>
@@ -517,6 +564,30 @@ function FunctionDetail({
             </div>
           </section>
         </>
+      )}
+
+      {functionEntry.relatedFunctions.length > 0 && (
+        <section className="related-functions">
+          <h2>相关函数</h2>
+
+          <div className="related-functions-list">
+            {functionEntry.relatedFunctions.map(
+              (relatedFunction) => (
+                <button
+                  key={relatedFunction.id}
+                  type="button"
+                  onClick={() =>
+                    onRelatedFunctionSelect(
+                      relatedFunction.id,
+                    )
+                  }
+                >
+                  {relatedFunction.name}
+                </button>
+              ),
+            )}
+          </div>
+        </section>
       )}
     </section>
   );

@@ -21,6 +21,16 @@ export type Tag = {
   slug: string;
 };
 
+export type RelatedFunction = {
+  id: number;
+  name: string;
+};
+
+export type LearningStatus =
+  | 'unlearned'
+  | 'learning'
+  | 'mastered';
+
 export type FunctionEntry = {
   id: number;
   name: string;
@@ -31,8 +41,10 @@ export type FunctionEntry = {
 
   variants: FunctionVariant[];
   tags: Tag[];
+  relatedFunctions: RelatedFunction[];
 
   favorite: boolean;
+  learningStatus: LearningStatus;
   note?: string | null;
 
   createdAt: string;

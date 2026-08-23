@@ -5,6 +5,7 @@ import {
 } from 'react';
 
 import { Link } from 'react-router-dom';
+import { apiUrl } from '../lib/api';
 
 type Category = {
   id: number;
@@ -65,6 +66,34 @@ function getCategoryPath(
   }
 
   return names.join(' → ');
+}
+
+function getCategoryOptionLabel(
+  category: Category,
+  categories: Category[],
+): string {
+  const depth =
+    getCategoryPath(
+      category,
+      categories,
+    ).split(' → ').length - 1;
+
+  return `${'　'.repeat(depth)}${
+    depth > 0 ? '↳ ' : ''
+  }${category.name}`;
+}
+
+function sortCategoriesByPath(
+  categories: Category[],
+): Category[] {
+  return [...categories].sort(
+    (a, b) =>
+      getCategoryPath(a, categories)
+        .localeCompare(
+          getCategoryPath(b, categories),
+          'zh-CN',
+        ),
+  );
 }
 
 function getDescendantIds(
@@ -170,7 +199,7 @@ function CategoryAdminPage() {
 
   async function loadCategories() {
     const response = await fetch(
-      'http://localhost:3000/api/categories',
+      apiUrl('/api/categories'),
     );
 
     if (!response.ok) {
@@ -180,7 +209,9 @@ function CategoryAdminPage() {
     const data: Category[] =
       await response.json();
 
-    setCategories(data);
+    setCategories(
+      sortCategoriesByPath(data),
+    );
   }
 
   useEffect(() => {
@@ -232,8 +263,8 @@ function CategoryAdminPage() {
       const editing = editingId !== null;
 
       const url = editing
-        ? `http://localhost:3000/api/categories/${editingId}`
-        : 'http://localhost:3000/api/categories';
+        ? apiUrl(`/api/categories/${editingId}`)
+        : apiUrl('/api/categories');
 
       const response = await fetch(url, {
         method: editing ? 'PUT' : 'POST',
@@ -297,7 +328,7 @@ function CategoryAdminPage() {
       setMessage('');
 
       const response = await fetch(
-        `http://localhost:3000/api/categories/${category.id}`,
+        apiUrl(`/api/categories/${category.id}`),
         {
           method: 'DELETE',
         },
@@ -432,7 +463,7 @@ function CategoryAdminPage() {
       key={category.id}
       value={category.id}
     >
-      {getCategoryPath(
+      {getCategoryOptionLabel(
         category,
         categories,
       )}

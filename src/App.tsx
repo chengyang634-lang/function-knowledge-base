@@ -12,14 +12,23 @@ import NewFunctionPage from './pages/NewFunctionPage';
 import EditFunctionPage from './pages/EditFunctionPage';
 import CategoryAdminPage from './pages/CategoryAdminPage';
 import TagAdminPage from './pages/TagAdminPage';
+import ReviewPage from './pages/ReviewPage';
+import ThemeToggle from './components/ThemeToggle';
 
 function App() {
   return (
     <BrowserRouter>
+      <ThemeToggle />
+
       <Routes>
         <Route
           path="/"
           element={<FunctionLibraryPage />}
+        />
+
+        <Route
+          path="/review"
+          element={<ReviewPage />}
         />
 
         <Route

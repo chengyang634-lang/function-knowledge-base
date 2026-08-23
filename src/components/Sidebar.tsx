@@ -6,6 +6,7 @@
 import type {
   Category,
   FunctionEntry,
+  LearningStatus,
 } from '../types/function';
 
 import type {
@@ -58,6 +59,14 @@ type SidebarProps = {
 
   onFavoritesOnlyChange: (
     value: boolean,
+  ) => void;
+
+  learningStatusFilter:
+    | LearningStatus
+    | 'all';
+
+  onLearningStatusFilterChange: (
+    value: LearningStatus | 'all',
   ) => void;
 };
 
@@ -380,6 +389,8 @@ function Sidebar({
   onSortChange,
   favoritesOnly,
   onFavoritesOnlyChange,
+  learningStatusFilter,
+  onLearningStatusFilterChange,
 }: SidebarProps) {
   const [
     expandedIds,
@@ -511,6 +522,33 @@ function Sidebar({
 
         <option value="popular">
           最常浏览
+        </option>
+      </select>
+
+      <select
+        className="learning-status-filter"
+        value={learningStatusFilter}
+        onChange={(event) =>
+          onLearningStatusFilterChange(
+            event.target.value as
+              LearningStatus | 'all',
+          )
+        }
+      >
+        <option value="all">
+          全部学习状态
+        </option>
+
+        <option value="unlearned">
+          未学习
+        </option>
+
+        <option value="learning">
+          学习中
+        </option>
+
+        <option value="mastered">
+          已掌握
         </option>
       </select>
 

@@ -18,6 +18,34 @@ app.get('/api/health', (_request, response) => {
    Functions
 ========================= */
 
+async function isLeafFunctionCategory(
+  categoryId: unknown,
+): Promise<boolean> {
+  if (
+    typeof categoryId !== 'number' ||
+    !Number.isSafeInteger(categoryId) ||
+    categoryId <= 0
+  ) {
+    return false;
+  }
+
+  const category =
+    await prisma.category.findFirst({
+      where: {
+        id: categoryId,
+        children: {
+          none: {},
+        },
+      },
+
+      select: {
+        id: true,
+      },
+    });
+
+  return category !== null;
+}
+
 app.get('/api/functions', async (_request, response) => {
   const functions =
     await prisma.functionEntry.findMany({
@@ -90,6 +118,17 @@ app.post('/api/functions', async (request, response) => {
   ) {
     return response.status(400).json({
       message: '至少需要一种写法',
+    });
+  }
+
+  if (
+    !(await isLeafFunctionCategory(
+      categoryId,
+    ))
+  ) {
+    return response.status(400).json({
+      message:
+        '函数必须选择最末级分类，父分类只能作为目录',
     });
   }
 
@@ -190,6 +229,17 @@ app.put('/api/functions/:id', async (request, response) => {
   ) {
     return response.status(400).json({
       message: '至少需要一种写法',
+    });
+  }
+
+  if (
+    !(await isLeafFunctionCategory(
+      categoryId,
+    ))
+  ) {
+    return response.status(400).json({
+      message:
+        '函数必须选择最末级分类，父分类只能作为目录',
     });
   }
 
@@ -325,6 +375,65 @@ app.patch(
 
       response.status(500).json({
         message: '更新收藏状态失败',
+      });
+    }
+  },
+);
+
+app.patch(
+  '/api/functions/:id/learning-status',
+  async (request, response) => {
+    const id = Number(request.params.id);
+
+    if (Number.isNaN(id)) {
+      return response.status(400).json({
+        message: 'Invalid function id',
+      });
+    }
+
+    const { learningStatus } = request.body;
+
+    const allowedLearningStatuses =
+      new Set([
+        'unlearned',
+        'learning',
+        'mastered',
+      ]);
+
+    if (
+      typeof learningStatus !== 'string' ||
+      !allowedLearningStatuses.has(learningStatus)
+    ) {
+      return response.status(400).json({
+        message: 'Invalid learning status',
+      });
+    }
+
+    try {
+      const functionEntry =
+        await prisma.functionEntry.update({
+          where: {
+            id,
+          },
+
+          data: {
+            learningStatus,
+          },
+
+          include: {
+            variants: true,
+            categoryNode: true,
+            tags: true,
+            relatedFunctions: true,
+          },
+        });
+
+      response.json(functionEntry);
+    } catch (error) {
+      console.error(error);
+
+      response.status(500).json({
+        message: '更新学习状态失败',
       });
     }
   },

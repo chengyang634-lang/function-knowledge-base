@@ -1,12 +1,13 @@
 ﻿import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import Sidebar from '../components/Sidebar';
+import LibraryTopNav from '../components/LibraryTopNav';
 import FunctionDetail from '../components/FunctionDetail';
 
 import type {
   Category,
   FunctionEntry,
+  LearningStatus,
 } from '../types/function';
 import { apiUrl } from '../lib/api';
 
@@ -122,6 +123,13 @@ function FunctionLibraryPage() {
     setFavoritesOnly,
   ] =
     useState(false);
+
+  const [
+    learningStatusFilter,
+    setLearningStatusFilter,
+  ] = useState<LearningStatus | 'all'>(
+    'all',
+  );
 
   const [sort, setSort] =
     useState<FunctionSort>(
@@ -327,6 +335,29 @@ function FunctionLibraryPage() {
     );
   }
 
+  function handleRelatedFunctionSelect(
+    functionId: number,
+  ) {
+    const relatedFunction =
+      functions.find(
+        (functionEntry) =>
+          functionEntry.id === functionId,
+      );
+
+    if (!relatedFunction) {
+      return;
+    }
+
+    setSearch('');
+    setSelectedTagId(null);
+    setFavoritesOnly(false);
+    setLearningStatusFilter('all');
+
+    handleFunctionSelect(
+      relatedFunction,
+    );
+  }
+
   function clearRecentFunctions() {
     setRecentFunctionIds([]);
 
@@ -433,6 +464,14 @@ function FunctionLibraryPage() {
         if (
           favoritesOnly &&
           !functionEntry.favorite
+        ) {
+          return false;
+        }
+
+        if (
+          learningStatusFilter !== 'all' &&
+          functionEntry.learningStatus !==
+            learningStatusFilter
         ) {
           return false;
         }
@@ -632,6 +671,60 @@ function FunctionLibraryPage() {
     );
   }
 
+  async function updateLearningStatus(
+    functionEntry: FunctionEntry,
+    learningStatus: LearningStatus,
+  ) {
+    const response =
+      await fetch(
+        apiUrl(
+          `/api/functions/${functionEntry.id}/learning-status`,
+        ),
+        {
+          method: 'PATCH',
+
+          headers: {
+            'Content-Type':
+              'application/json',
+          },
+
+          body: JSON.stringify({
+            learningStatus,
+          }),
+        },
+      );
+
+    if (!response.ok) {
+      window.alert(
+        '更新学习状态失败',
+      );
+      return;
+    }
+
+    const updatedFunction:
+      FunctionEntry =
+      await response.json();
+
+    setFunctions(
+      (current) =>
+        current.map(
+          (item) =>
+            item.id ===
+            updatedFunction.id
+              ? updatedFunction
+              : item,
+        ),
+    );
+
+    setSelectedFunction(
+      (current) =>
+        current?.id ===
+        updatedFunction.id
+          ? updatedFunction
+          : current,
+    );
+  }
+
   async function toggleFavorite(
     functionEntry: FunctionEntry,
   ) {
@@ -701,9 +794,15 @@ function FunctionLibraryPage() {
           </p>
         </div>
 
-        <Link to="/admin">
-          管理后台
-        </Link>
+        <div className="library-header-actions">
+          <Link to="/review">
+            随机抽查
+          </Link>
+
+          <Link to="/admin">
+            管理后台
+          </Link>
+        </div>
       </header>
 
       {selectedTag && (
@@ -728,7 +827,7 @@ function FunctionLibraryPage() {
       )}
 
       <div className="library-layout">
-        <Sidebar
+        <LibraryTopNav
           categories={
             categories
           }
@@ -771,6 +870,12 @@ function FunctionLibraryPage() {
           onFavoritesOnlyChange={
             setFavoritesOnly
           }
+          learningStatusFilter={
+            learningStatusFilter
+          }
+          onLearningStatusFilterChange={
+            setLearningStatusFilter
+          }
         />
 
         <FunctionDetail
@@ -792,6 +897,12 @@ function FunctionLibraryPage() {
           }
           onTagSelect={
             handleTagSelect
+          }
+          onRelatedFunctionSelect={
+            handleRelatedFunctionSelect
+          }
+          onLearningStatusChange={
+            updateLearningStatus
           }
           onToggleFavorite={
             toggleFavorite

@@ -24,6 +24,7 @@ model FunctionEntry {
   relatedFunctions FunctionEntry[] @relation("FunctionRelations")
   relatedBy        FunctionEntry[] @relation("FunctionRelations")
 favorite     Boolean           @default(false)
+  learningStatus String          @default("unlearned")
 
   note         String?
 

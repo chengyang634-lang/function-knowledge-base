@@ -41,6 +41,9 @@ function NewFunctionPage() {
               tagIds:
                 value.tagIds,
 
+              relatedFunctionIds:
+                value.relatedFunctionIds,
+
               variants:
                 value.variants.map(
                   (
