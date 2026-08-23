@@ -99,31 +99,6 @@ function getCategoryPathItems(
   return path;
 }
 
-function getCategoryPath(
-  category: Category,
-  categories: Category[],
-): string {
-  return getCategoryPathItems(
-    category,
-    categories,
-  )
-    .map((item) => item.name)
-    .join(' → ');
-}
-
-function getCategoryDepth(
-  category: Category,
-  categories: Category[],
-): number {
-  return Math.max(
-    0,
-    getCategoryPathItems(
-      category,
-      categories,
-    ).length - 1,
-  );
-}
-
 function getCategoryTypeByDepth(
   depth: number,
 ): CategoryType {
